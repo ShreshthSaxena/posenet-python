@@ -1,3 +1,4 @@
+
 import cv2
 import numpy as np
 
@@ -77,8 +78,11 @@ def draw_skeleton(
 
 def draw_skel_and_kp(
         img, instance_scores, keypoint_scores, keypoint_coords,
-        min_pose_score=0.5, min_part_score=0.5):
-    out_img = img
+        min_pose_score=0.5, min_part_score=0.5, bgimage = True):
+    if bgimage:
+      out_img = img
+    else:
+      out_img = np.zeros((img.shape[0],img.shape[1],3), np.uint8)
     adjacent_keypoints = []
     cv_keypoints = []
     for ii, score in enumerate(instance_scores):
