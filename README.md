@@ -1,8 +1,6 @@
 ## PoseNet Python
 
-This repository contains a pure Python implementation (multi-pose only) of the Google TensorFlow.js Posenet model. For a (slightly faster) PyTorch implementation that followed from this, see (https://github.com/rwightman/posenet-pytorch)
-
-I first adapted the JS code more or less verbatim and found the performance was low so made some vectorized numpy/scipy version of a few key functions (named `_fast`).
+This repository contains a pure Python implementation (multi-pose only) of the Google TensorFlow.js Posenet model.
 
 Further optimization is possible
 * The base MobileNet models have a throughput of 200-300 fps on a GTX 1080 Ti (or better)
@@ -11,26 +9,10 @@ Further optimization is possible
   * My 'fast' post processing results in 90-110fps
 * A Cython or pure C++ port would be even better...  
 
-### Install
-
-A suitable Python 3.x environment with a recent version of Tensorflow is required.
-
-Development and testing was done with Conda Python 3.6.8 and Tensorflow 1.12.0 on Linux.
-
-Windows 10 with the latest (as of 2019-01-19) 64-bit Python 3.7 Anaconda installer was also tested.
-
-If you want to use the webcam demo, a pip version of opencv (`pip install opencv-python`) is required instead of the conda version. Anaconda's default opencv does not include ffpmeg/VideoCapture support. Also, you may have to force install version 3.4.x as 4.x has a broken drawKeypoints binding.
-
-A conda environment setup as below should suffice: 
-```
-conda install tensorflow-gpu scipy pyyaml python=3.6
-pip install opencv-python==3.4.5.20
-
-```
 
 ### Usage
 
-There are three demo apps in the root that utilize the PoseNet model. They are very basic and could definitely be improved.
+There are multiple demo apps in the root that utilize the PoseNet model. They are very basic and could definitely be improved.
 
 The first time these apps are run (or the library is used) model weights will be downloaded from the TensorFlow.js version and converted on the fly.
 
@@ -50,7 +32,17 @@ A minimal performance benchmark based on image_demo. Images in `--image_dir` are
 
 #### webcam_demo.py
 
-The webcam demo uses OpenCV to capture images from a connected webcam. The result is overlayed with the keypoints and skeletons and rendered to the screen. The default args for the webcam_demo assume device_id=0 for the camera and that 1280x720 resolution is possible.
+Shows a stick figure pose in real-time using a web-cam. To overlay the stick figure on background turn on the "bgimage" parameter
+
+#### webcam_demo_react.py
+
+Fun game that uses hand detection and calculates reaction time taken to touch targets with hand.
+
+#### webcam_demo_circles2.py
+
+Matches real-time pose to a pre-set pose based on lower body keypoints.
+
+
 
 ### Credits
 
@@ -59,11 +51,4 @@ The original model, weights, code, etc. was created by Google and can be found a
 This port and my work is in no way related to Google.
 
 The Python conversion code that started me on my way was adapted from the CoreML port at https://github.com/infocom-tpo/PoseNet-CoreML
-
-### TODO (someday, maybe)
-* More stringent verification of correctness against the original implementation
-* Performance improvements (especially edge loops in 'decode.py')
-* OpenGL rendering/drawing
-* Comment interfaces, tensor dimensions, etc
-* Implement batch inference for image_demo
 
